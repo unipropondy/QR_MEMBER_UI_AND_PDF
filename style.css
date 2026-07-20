@@ -827,7 +827,7 @@ body {
     }
     
     body {
-        background: none !important;
+        background: var(--stand-bg) !important;
     }
     
     /* Override mobile display states during printing */

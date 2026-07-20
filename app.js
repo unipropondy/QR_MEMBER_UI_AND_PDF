@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 elements.qrcodeContainer.innerHTML = '<div style="font-size:0.6rem;color:#7c7267;text-align:center;padding:10px;font-family:inherit;">Upload QR Code Image</div>';
             }
         } else {
-            const pxSize = Math.round(scaledSize * 3.78);
+            const pxSize = Math.round(scaledSize * 3.78) * 4; // 4x resolution for high-DPI printing
             if (typeof QRCode !== 'undefined') {
                 qrcodeInstance = new QRCode(elements.qrcodeContainer, {
                     text: state.qrUrl,

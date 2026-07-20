@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Tabletop QR Stand Designer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="mobile-tabs-nav">
+        <button class="mobile-tab-btn active" id="tab-edit">1. Edit Design</button>
+        <button class="mobile-tab-btn" id="tab-preview">2. Preview & Print</button>
+    </div>
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>QR Stand Designer</h1>
+                <p>A5 Portrait Tabletop Print Board Generator</p>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Theme Control -->
+                <div class="control-group">
+                    <label>Select Luxury Theme</label>
+                    <div class="theme-selector">
+                        <button class="theme-btn active" data-theme="charcoal-gold">Charcoal Gold</button>
+                        <button class="theme-btn" data-theme="emerald-gold">Dark Emerald</button>
+                        <button class="theme-btn" data-theme="navy-gold">Royal Navy</button>
+                        <button class="theme-btn" data-theme="white-gold">Minimalist White</button>
+                        <button class="theme-btn" data-theme="rose-champagne">Rose Champagne</button>
+                        <button class="theme-btn" data-theme="burgundy-gold">Burgundy Gold</button>
+                        <button class="theme-btn" data-theme="obsidian-silver">Obsidian Silver</button>
+                        <button class="theme-btn" data-theme="plum-bronze">Plum Bronze</button>
+                        <button class="theme-btn" data-theme="white-orange">White Orange</button>
+                        <button class="theme-btn" data-theme="purple-white">Purple White</button>
+                    </div>
+                </div>
+
+                <!-- Paper Size Control -->
+                <div class="control-group">
+                    <label>Export Paper Size</label>
+                    <select id="paper-size-ctrl">
+                        <option value="A4">A4 (210mm x 297mm)</option>
+                        <option value="A5" selected>A5 (148mm x 210mm)</option>
+                        <option value="A6">A6 (105mm x 148mm)</option>
+                        <option value="A7">A7 (74mm x 105mm)</option>
+                    </select>
+                </div>
+
+                <!-- Brand / Logo Control -->
+                <div class="control-group">
+                    <label>Brand Logo</label>
+                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                        <input type="file" id="logo-upload" accept="image/*"
+                            style="font-size: 0.8rem; color: var(--text-secondary); flex: 1; min-width: 0;">
+                        <button id="clear-logo-btn" type="button"
+                            style="padding: 10px 14px; background: var(--accent-gold); color: #0a0a0c; border: none; border-radius: 6px; font-family: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.3s ease;">Clear</button>
+                    </div>
+
+                    <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Logo Color
+                        Adjustment</label>
+                    <select id="logo-filter-ctrl" style="margin-bottom: 8px;">
+                        <option value="none">Original Colors</option>
+                        <option value="white">Invert to White / Light</option>
+                        <option value="black">Convert to Black / Dark</option>
+                        <option value="gold">Gold Luxury Tint</option>
+                    </select>
+
+                    <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Logo Size
+                        (Height)</label>
+                    <input type="range" id="logo-size-ctrl" min="15" max="60" value="28"
+                        style="width: 100%; margin-bottom: 12px; accent-color: var(--accent-gold);">
+
+                    <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Logo Text
+                        Fallback</label>
+                    <input type="text" id="logo-text-ctrl" placeholder="Brand Name / Text Logo">
+                </div>
+
+                <!-- Headings -->
+                <div class="control-group">
+                    <label>Main Heading</label>
+                    <input type="text" id="heading-main-ctrl" placeholder="Become Our Member">
+                </div>
+
+                <div class="control-group">
+                    <label>Sub Heading</label>
+                    <input type="text" id="heading-sub-ctrl" placeholder="Scan the QR Code to Register">
+                </div>
+
+                <div class="control-group">
+                    <label>Description</label>
+                    <textarea id="desc-ctrl" rows="3"
+                        placeholder="Brief description of membership benefits..."></textarea>
+                </div>
+
+                <!-- QR Target -->
+                <div class="control-group">
+                    <label>QR Code Setup</label>
+                    <select id="qr-source-mode" style="margin-bottom: 8px;">
+                        <option value="url">Generate from URL</option>
+                        <option value="upload">Upload Custom QR Image</option>
+                    </select>
+
+                    <div id="qr-url-container">
+                        <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Target
+                            URL</label>
+                        <input type="text" id="qr-url-ctrl" placeholder="https://example.com/register">
+                    </div>
+
+                    <div id="qr-upload-container" style="display: none;">
+                        <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Upload QR
+                            Code Image</label>
+                        <input type="file" id="qr-upload" accept="image/*"
+                            style="font-size: 0.8rem; color: var(--text-secondary);">
+                    </div>
+
+                    <label
+                        style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px; margin-bottom: 4px;">QR
+                        Code Display Size</label>
+                    <input type="range" id="qr-size-ctrl" min="25" max="60" value="38"
+                        style="width: 100%; margin-bottom: 12px; accent-color: var(--accent-gold);">
+
+                    <label
+                        style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; margin-bottom: 0;">Scan
+                        Label</label>
+                    <input type="text" id="scan-text-ctrl" placeholder="Scan Here to Register">
+                </div>
+
+                <!-- Benefits -->
+                <div class="control-group">
+                    <label>Loyalty & Benefits List</label>
+                    <div id="benefit-controls">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Footer Text -->
+                <div class="control-group">
+                    <label>Footer Note</label>
+                    <input type="text" id="footer-text-ctrl" placeholder="Thank You for Joining...">
+                </div>
+            </div>
+
+            <!-- Print Actions -->
+            <div class="sidebar-footer">
+                <button id="print-btn" class="btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                        <path d="M6 9V2h12v7"></path>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    Export high-res A5 PDF / Print
+                </button>
+            </div>
+        </aside>
+
+        <!-- Preview Canvas -->
+        <main class="preview-container">
+            <!-- A5 Stand Board -->
+            <div id="stand-board" class="stand-board-a5 theme-charcoal-gold">
+                <!-- Golden Geometric Background Lines -->
+                <svg class="stand-bg-pattern" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M0,20 L100,50 M100,20 L0,50 M0,80 L100,50 M100,80 L0,50" stroke="var(--stand-gold)"
+                        stroke-width="0.15" fill="none" />
+                    <circle cx="50" cy="50" r="40" stroke="var(--stand-gold)" stroke-width="0.08" fill="none" />
+                    <circle cx="50" cy="50" r="30" stroke="var(--stand-gold)" stroke-width="0.05" fill="none"
+                        stroke-dasharray="1 1" />
+                    <path d="M10,10 L90,10 L90,90 L10,90 Z" stroke="var(--stand-gold)" stroke-width="0.1" fill="none"
+                        stroke-dasharray="2 2" />
+                </svg>
+
+                <!-- Top: Company Logo -->
+                <div class="stand-header">
+                    <div class="logo-container">
+                        <img id="logo-img-preview" src="logonew.png" alt="Company Logo" class="logo-img">
+                        <span id="logo-text-preview" class="logo-placeholder" style="display: none;">MY
+                            RESTAURANT</span>
+                    </div>
+                    <h2 id="heading-main-preview" class="heading-main">Become Our Member</h2>
+                    <h3 id="heading-sub-preview" class="heading-sub">Scan the QR Code to Register & Enjoy Exclusive
+                        Benefits</h3>
+                    <p id="desc-preview" class="stand-desc">
+                        Join our membership program to earn rewards, receive exclusive offers, special discounts,
+                        birthday surprises, and member-only promotions. Registration takes less than a minute.
+                    </p>
+                </div>
+
+                <!-- Center: QR Code with Smartphone Outline Visual -->
+                <div class="stand-middle">
+                    <div class="qr-outer-container">
+                        <div class="scanner-illustration-wrapper">
+                            <!-- Premium Phone Outline Visualizer -->
+                            <div class="phone-outline">
+                                <div class="phone-camera"></div>
+                            </div>
+                            <!-- Dynamic QR Box -->
+                            <div class="qr-box">
+                                <div id="qrcode"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="scan-text-preview" class="scan-here-text">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M4 6h2v2H4zm0 4h2v2H4zm0 4h2v2H4zm0 4h2v2H4zm14-12h2v2h-2zm0 4h2v2h-2zm0 4h2v2h-2zm0 4h2v2h-2zM8 4h2v2H8zm4 0h2v2h-2zm4 0h2v2h-2zM8 18h2v2H8zm4 0h2v2h-2zm4 0h2v2h-2z" />
+                        </svg>
+                        Scan Here to Register
+                    </div>
+                </div>
+
+                <!-- Bottom: Benefits List (4 items) -->
+                <div class="stand-bottom">
+                    <div class="benefits-grid">
+                        <div class="benefit-card" id="benefit-card-0">
+                            <div class="benefit-icon-container">
+                                <span class="benefit-icon">🎁</span>
+                            </div>
+                            <div class="benefit-card-content">
+                                <h4>Exclusive Offers</h4>
+                                <p>Sleek rewards just for you</p>
+                            </div>
+                        </div>
+                        <div class="benefit-card" id="benefit-card-1">
+                            <div class="benefit-icon-container">
+                                <span class="benefit-icon">💰</span>
+                            </div>
+                            <div class="benefit-card-content">
+                                <h4>Member Discounts</h4>
+                                <p>Up to 15% off menu items</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer: Thank You Message -->
+                <div class="stand-footer">
+                    <div id="footer-text-preview" class="footer-text">
+                        Thank You for Joining Our Membership Program
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zoom Controls -->
+            <div class="zoom-controls">
+                <button class="zoom-btn" id="zoom-out">−</button>
+                <div class="zoom-val" id="zoom-val">100%</div>
+                <button class="zoom-btn" id="zoom-in">+</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+
+</html>

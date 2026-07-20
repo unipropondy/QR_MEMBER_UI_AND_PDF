@@ -500,10 +500,10 @@ body {
 .stand-desc {
     font-size: 0.9em;
     line-height: 1.45;
-    color: var(--stand-text-muted);
+    color: var(--stand-gold);
     max-width: 95%;
     margin: 0 auto calc(4mm * var(--print-scale-factor, 1)) auto;
-    font-weight: 400;
+    font-weight: 700;
 }
 
 /* QR Code Section (Center Focus) */

@@ -821,9 +821,13 @@ body {
 
 /* Print Specific Rules (High-Resolution Output) - Must remain at absolute bottom of file */
 @media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
     body {
         background: none !important;
-        color: #000000 !important;
     }
     
     /* Override mobile display states during printing */

@@ -715,11 +715,17 @@ body {
         color: #000000;
     }
     
+    /* Override mobile display states during printing */
+    body.show-edit .sidebar,
+    body.show-preview .sidebar,
     .sidebar,
+    .mobile-tabs-nav,
     .zoom-controls {
         display: none !important;
     }
     
+    body.show-edit .preview-container,
+    body.show-preview .preview-container,
     .preview-container {
         padding: 0 !important;
         margin: 0 !important;

@@ -708,46 +708,6 @@ body {
     opacity: 0.6;
 }
 
-/* Print Specific Rules (High-Resolution Output) */
-@media print {
-    body {
-        background: none;
-        color: #000000;
-    }
-    
-    /* Override mobile display states during printing */
-    body.show-edit .sidebar,
-    body.show-preview .sidebar,
-    .sidebar,
-    .mobile-tabs-nav,
-    .zoom-controls {
-        display: none !important;
-    }
-    
-    body.show-edit .preview-container,
-    body.show-preview .preview-container,
-    .preview-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        background: none !important;
-        display: block !important;
-        overflow: visible !important;
-        width: auto !important;
-        height: auto !important;
-    }
-    
-    .stand-board-a5 {
-        transform: none !important;
-        box-shadow: none !important;
-        width: var(--paper-width, 148mm) !important;
-        height: var(--paper-height, 210mm) !important;
-        page-break-inside: avoid;
-        page-break-after: always;
-        margin: 0 !important;
-        padding: calc(18mm * var(--print-scale-factor, 1)) calc(14mm * var(--print-scale-factor, 1)) !important;
-    }
-}
-
 /* Zoom controls */
 .zoom-controls {
     position: absolute;
@@ -859,3 +819,42 @@ body {
     }
 }
 
+/* Print Specific Rules (High-Resolution Output) - Must remain at absolute bottom of file */
+@media print {
+    body {
+        background: none !important;
+        color: #000000 !important;
+    }
+    
+    /* Override mobile display states during printing */
+    body.show-edit .sidebar,
+    body.show-preview .sidebar,
+    .sidebar,
+    .mobile-tabs-nav,
+    .zoom-controls {
+        display: none !important;
+    }
+    
+    body.show-edit .preview-container,
+    body.show-preview .preview-container,
+    .preview-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: none !important;
+        display: block !important;
+        overflow: visible !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    
+    .stand-board-a5 {
+        transform: none !important;
+        box-shadow: none !important;
+        width: var(--paper-width, 148mm) !important;
+        height: var(--paper-height, 210mm) !important;
+        page-break-inside: avoid;
+        page-break-after: always;
+        margin: 0 !important;
+        padding: calc(18mm * var(--print-scale-factor, 1)) calc(14mm * var(--print-scale-factor, 1)) !important;
+    }
+}

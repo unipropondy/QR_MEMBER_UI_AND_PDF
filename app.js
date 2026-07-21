@@ -218,7 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 elements.qrcodeContainer.innerHTML = '<div style="font-size:0.6rem;color:#7c7267;text-align:center;padding:10px;font-family:inherit;">Upload QR Code Image</div>';
             }
         } else {
-            const pxSize = Math.round(scaledSize * 3.78) * 4; // 4x resolution for high-DPI printing
+            // High DPI 4K resolution (render at 1600px+ to guarantee 4K crispness)
+            const pxSize = Math.max(1600, Math.round(scaledSize * 3.78) * 8);
             if (typeof QRCode !== 'undefined') {
                 qrcodeInstance = new QRCode(elements.qrcodeContainer, {
                     text: state.qrUrl,
@@ -380,6 +381,98 @@ document.addEventListener('DOMContentLoaded', () => {
             tabEdit.classList.remove('active');
             document.body.classList.remove('show-edit');
             document.body.classList.add('show-preview');
+        });
+    }
+
+    // 4K Ultra-HD PDF Download Handler
+    const downloadPdfBtn = document.getElementById('download-pdf-btn');
+    if (downloadPdfBtn) {
+        downloadPdfBtn.addEventListener('click', async () => {
+            const originalText = downloadPdfBtn.innerHTML;
+            downloadPdfBtn.disabled = true;
+            downloadPdfBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin-icon" style="margin-right: 6px; animation: spin 1s linear infinite;">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                    <path d="M12 2 a 10 10 0 0 1 10 10"></path>
+                </svg>
+                Generating 4K PDF...
+            `;
+
+            const boardEl = document.getElementById('stand-board');
+            if (!boardEl) {
+                downloadPdfBtn.disabled = false;
+                downloadPdfBtn.innerHTML = originalText;
+                return;
+            }
+
+            // Ensure QR code is rendered at maximum 4K sharpness
+            generateQR();
+
+            // Get exact target paper size dimensions
+            const sizeData = paperSizes[state.paperSize] || { width: '148mm', height: '210mm' };
+            const wMm = parseFloat(sizeData.width);
+            const hMm = parseFloat(sizeData.height);
+
+            const opt = {
+                margin: 0,
+                filename: `QR_Stand_${state.theme}_${state.paperSize}_4K.pdf`,
+                image: { type: 'png', quality: 1.0 },
+                html2canvas: {
+                    scale: 4, // 4x pixel scaling for 4K Ultra-HD crisp output
+                    useCORS: true,
+                    allowTaint: true,
+                    letterRendering: true,
+                    logging: false,
+                    backgroundColor: null,
+                    onclone: (clonedDoc) => {
+                        const board = clonedDoc.getElementById('stand-board');
+                        if (board) {
+                            const headings = board.querySelectorAll('.heading-main');
+                            headings.forEach(el => {
+                                el.style.webkitTextFillColor = 'initial';
+                                el.style.background = 'none';
+                                el.style.color = 'var(--stand-gold)';
+                                el.style.textShadow = 'none';
+                                el.style.fontWeight = '800';
+                            });
+                            
+                            const subHeadings = board.querySelectorAll('.heading-sub');
+                            subHeadings.forEach(el => {
+                                el.style.color = 'var(--stand-text-primary)';
+                                el.style.textShadow = 'none';
+                                el.style.fontWeight = '700';
+                            });
+
+                            const descs = board.querySelectorAll('.stand-desc');
+                            descs.forEach(el => {
+                                el.style.color = 'var(--stand-gold)';
+                                el.style.textShadow = 'none';
+                                el.style.fontWeight = '700';
+                            });
+                        }
+                    }
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: [wMm, hMm],
+                    orientation: 'portrait',
+                    compress: false // DO NOT compress PDF stream - maintain 100% 4K lossless quality
+                }
+            };
+
+            try {
+                if (typeof html2pdf !== 'undefined') {
+                    await html2pdf().set(opt).from(boardEl).save();
+                } else {
+                    window.print();
+                }
+            } catch (err) {
+                console.error('PDF generation error:', err);
+                window.print();
+            } finally {
+                downloadPdfBtn.disabled = false;
+                downloadPdfBtn.innerHTML = originalText;
+            }
         });
     }
 
